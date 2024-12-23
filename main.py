@@ -30,7 +30,43 @@ mongo.init_app(app, uri=app.config['MONGO_URI'], tls=True, tlsCAFile=certifi.whe
 
 bcrypt = Bcrypt(app)  # Initialize Bcrypt
 jwt = JWTManager(app)  # Initialize JWT Manager
-swagger = Swagger(app)
+# swagger = Swagger(app)
+
+
+swagger = Swagger(app, template={
+    "info": {
+        "title": "Recipe API",
+        "description": "API for recipe dataset with JWT authentication",
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+        }
+    },
+    "security": [{"Bearer": []}],
+    "swaggerUi": {
+        "onComplete": """
+            function() {
+                // Swagger UI configuration
+                const authButton = document.querySelector('button[data-swagger-ui="authorize"]');
+                if (authButton) {
+                    authButton.addEventListener('click', function() {
+                        const token = prompt('Enter your JWT token (without "Bearer" prefix):');
+                        const bearerToken = 'Bearer ' + token;
+                        const security = {
+                            Bearer: [bearerToken]
+                        };
+                        window.ui.getConfigs().security = security;
+                    });
+                }
+            }
+        """
+    }
+})
+
 
 # Test MongoDB connection route
 @app.route('/test_db_connection', methods=['GET'])

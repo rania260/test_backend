@@ -1,0 +1,4 @@
+title,ingredients,directions,link,source,NER,site
+Recipe 1,"tomato, pasta",step1 | step2,http://test1.com,source1,"tomato, pasta",site1
+Recipe 2,"chicken, rice",step1 | step2,http://test2.com,source2,"chicken, rice",site2
+Test Recipe,"ingredient1, ingredient2",step1 | step2,http://test.com,test_source,test NER,test_site
